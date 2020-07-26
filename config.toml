@@ -2,3 +2,5 @@ baseURL = "http://example.org/"
 languageCode = "en-us"
 title = "EZFW"
 theme = "ezfw-theme"
+pygmentsUseClasses = true
+pygmentsCodefences = true

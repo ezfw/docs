@@ -4,5 +4,18 @@
 @import "node_modules/tailwindcss/components";
 /* Site Specific */
 @import "assets/css/site";
+@import "assets/css/syntax";
 /* Tailwind's utility classes - generated based on config file */
 @import "node_modules/tailwindcss/utilities";
+
+h2 {
+    @apply text-2xl font-bold mt-6 mb-3;
+}
+
+h3 {
+    @apply text-xl font-bold mt-6 mb-3;
+}
+
+ul {
+    @apply list-inside list-disc pl-6;
+}

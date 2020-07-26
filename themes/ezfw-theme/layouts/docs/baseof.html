@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang='{{ .Site.LanguageCode }}'>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>
+        {{ block "title" . }}
+        {{ .Title }} - Docs - {{ .Site.Title }}
+        {{ end }}
+    </title>
+    {{- if .Description }}
+    <meta name="description" content="{{ .Description }}" />
+    {{ end -}}
+    {{- if .Keywords }}
+    <meta name="keywords" content="{{ delimit .Keywords "," }}" />
+    {{ end -}}
+    {{- if .Params.Author }}
+    <meta name="author" content="{{ .Params.Author}}" />
+    {{ end -}}
+    {{ hugo.Generator }}
+
+    {{- $styles := resources.Get "css/styles.css" | postCSS (dict "config" "./assets/css/postcss.config.js") -}}
+    {{- if .Site.IsServer }}
+    <link rel="stylesheet" href="{{ $styles.RelPermalink }}">
+    {{ else }}
+    {{- $styles := $styles| minify | fingerprint | resources.PostProcess -}}
+    <link rel="stylesheet" href="{{ $styles.Permalink }}" integrity="{{ $styles.Data.Integrity }}">
+    {{ end -}}
+</head>
+
+<body class="min-h-screen">
+    {{- partial "dev-size-indicator.html" . -}}
+    {{- partial "header.html" . -}}
+    {{ $uniqueID := .File.UniqueID }}
+    <div class="flex w-full justify-center mt-12 mb-20">
+        <div class="flex container">
+            <div class="flex flex-col">
+                {{ range sort (where .Site.Pages "Section" .Section) "Params.weight" }}
+                <a href="{{ .Permalink }}" class="p-2 {{ if eq .File.UniqueID $uniqueID }}text-indigo-500 font-bold{{else}}text-gray-700{{ end }} text-sm">{{ .Title }}</a>
+                {{ end }}
+            </div>
+            <main class="pl-16 flex-1">
+                <article class="text-gray-700">
+                    <h1 class="font-bold text-3xl text-gray-700 mb-6">{{ .Title }}</h1>
+                    {{ .Content }}
+                </article>
+            </main>
+        </div>
+    </div>
+</body>
+
+</html>
